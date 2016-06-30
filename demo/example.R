@@ -1,8 +1,8 @@
 ## show case
 
 # library(ddclone)
-#source('R/ddclone.R')
-#source('R/helper.R')
+source('R/ddclone.R')
+source('R/helper.R')
 
 ###########################
 # 1. Simulated Data
