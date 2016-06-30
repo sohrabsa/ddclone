@@ -1,0 +1,10 @@
+Package: ddclone
+Type: Package
+Title: Joint clustering of Bulk and Single cell data  (Title Case)
+Version: 0.1
+Date: 2016-06-29
+Author: Sohrab Salehi
+Maintainer: Who to complain to <ssalhei@bccrc.ca>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+LazyData: TRUE

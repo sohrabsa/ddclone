@@ -1,0 +1,17 @@
+{
+    "contents" : "# ddClone starting point\nsource('R/env-setup.R')\nsource('R/driver.R')\nsource('R/summaries.R')\n\n# dataPath = './data/dollo.10.48.5.f0.gl10-u.dat'; outputPath = './output/out1'\n# burnIn = 10; thinning = 1; tumourContent = 1.0; numOfIterations = 100; a = 0.01; alpha = 0.01; s = 1000; seed = 1; useTraditionalCRP = F;\n# grid.mA = 100; grid.mS = 100; grid.mAlpha = 100\nddclone <- function(dataPath, outputPath, tumourContent = 1.0,\n                    numOfIterations = 100, thinning = 1, burnIn,\n                    a = 0.01, alpha = 1, s = 1, seed = 10, useTraditionalCRP = F,\n                    grid.mA = 10, grid.mS = 10, grid.mAlpha = 10) {\n  # run the sampler\n  if (is.null(burnIn)) burnIn <- floor(niter/10)\n  MCMCOptions <- list(thinning = thinning, niter = numOfIterations, burnIn = burnIn)\n\n  hyperParams <- list(hyperParamAlpha=alpha, hyperParamA=a, hyperParamS=s)\n  decay.fn.name <- 'exp.decay.s'\n  dist.fn <- jaccardDist\n  if (useTraditionalCRP) {\n    decay.fn.name <- 'identity.decay'\n    dist.fn <- identity.s\n  }\n  set.seed(seed)\n  res <- driver(niter = numOfIterations, dist.fn = dist.fn,\n                decay.fn.name =  decay.fn.name,\n                decay.fn = getFunction(decay.fn.name),\n                dataPath = dataPath,\n                outputPath = outputPath,\n                tumourContent = tumourContent,\n                genotype.prior.scheme ='PCN',\n                hyperParamAlpha=alpha, hyperParamA=a, hyperParamS=s,\n                MCMCOptions = MCMCOptions,\n                grid.mA=grid.mA, grid.mS=grid.mS, grid.mAlpha=grid.mAlpha)\n\n  res$hyperParams <- hyperParams\n  res$dataID <- basename(dataPath)\n  res$TraditionalCRP <- useTraditionalCRP\n  res\n  expPath <- res$expPath\n\n  # compute point estiamtes (use MCMC options)\n  estClust <- estimatePointClustering(expPath = expPath, MCMCOptions = MCMCOptions)\n  estPhi <- estimatePointPhi(expPath = expPath, MCMCOptions = MCMCOptions)\n\n  write.table(estClust, file.path(expPath, 'clust-est.csv'))\n  write.table(estPhi, file.path(expPath, 'phi-est.csv'))\n\n  # wrap up into a data.frame\n  df <- data.frame(mutID = colnames(readRDS(dataPath)$filteredMutMatrix), phi = unname(estPhi), clusterID = estClust[1, ])\n  list(df = df, expPath = expPath, dataPath = dataPath)\n}\n\n# ddclone(dataPath = './data/dollo.10.48.4.f0.gl0-u.dat', outputPath = './output/out1', burnIn = 10, seed = 10, numOfIterations = 100)\n",
+    "created" : 1467236842256.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4167570391",
+    "id" : "A4E99674",
+    "lastKnownWriteTime" : 1467252352,
+    "path" : "~/Google Drive/Masters/Thesis/scripts/ddcrppaper/submission.code/ddclone/R/ddclone.R",
+    "project_path" : "R/ddclone.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
