@@ -1,5 +1,6 @@
 ```{r}
-library(ddclone)
+source('R/ddclone.R')
+source('R/helper.R')
 ```
 
 
