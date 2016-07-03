@@ -1,19 +1,26 @@
 Package: ddclone
 Type: Package
-Title: Joint statistical inference of clonal populations from single cell and bulk tumour sequencing data
+Title: Joint statistical inference of clonal populations from single cell and
+    bulk tumour sequencing data
 Version: 0.1
 Date: 2016-06-29
 Author: Sohrab Salehi
 Maintainer: Sohrab Salehi <ssalhei@bccrc.ca>
-Description: Joint statistical inference of clonal populations from single cell and bulk tumour sequencing data.
+Description: Joint statistical inference of clonal populations from single cell
+    and bulk tumour sequencing data.
 BugReports: https://github.com/sohrabsa/ddclone/issues
 URL: https://github.com/sohrabsa/ddclone
 License: GPL-2
 LazyData: TRUE
-Imports: plyr,
+Imports:
+    plyr,
     Matrix,
     mcclust,
-    lsa,
     VGAM,
     vegan,
     matrixStats
+Suggests:
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1

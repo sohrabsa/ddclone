@@ -5,6 +5,12 @@ load.original.data <- function(dataID) {
   data.frame(id=1:nMut, prev=as.vector(dat$mutPrevalence))
 }
 
+#' Computes a point estimate (using MAXPEAR method) for clustering of the mutations from the results of a ddClone analysis run
+#'
+#' @param expPath path to the directory where the ddClone results are stored
+#' @param MCMCOptions a listing containing MCMC options including \code{thinning} and \code{burnIn} to be used.
+#' @return A matrix each row of which is a point estimate of clustering assignment for each mutation. See mcclust::maxpear for more details.
+#' @export
 estimatePointClustering <- function(expPath, MCMCOptions=list(thinning=10, burnIn=100)) {
   filePath <- file.path(expPath, 'clust-trace.csv')
   clust <- read.table(filePath, stringsAsFactors=F)
@@ -26,7 +32,12 @@ estimatePointClustering <- function(expPath, MCMCOptions=list(thinning=10, burnI
   mpear$cl
 }
 
-
+#' Computes a Monte Carlo estimate for the cellular prevalences of each mutation
+#'
+#' @param expPath path to the directory where the ddClone results are stored
+#' @param MCMCOptions a listing containing MCMC options including \code{thinning} and \code{burnIn} to be used.
+#' @return a vector containingcontaining the Monte Carlo estimate for each mutation
+#' @export
 estimatePointPhi <- function(expPath, MCMCOptions=list(thinning=10, burnIn=100)) {
   filePath <- file.path(expPath, 'phi-trace.csv')
   phi <- read.table(filePath)

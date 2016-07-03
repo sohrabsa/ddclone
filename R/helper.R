@@ -5,13 +5,8 @@ library(VGAM)
 library(vegan)
 library(matrixStats)
 
-# --- Cached Variables --- (helps avoid copying while passing functions)
-#LCACHED <- NULL
-#AlphaCACHED <- NULL
-#Decay.CACHED <- NULL
-
 EmptyCache <- T
-##
+
 make.pyclone.input <- function(mutDat) {
   # mutation_id  ref_counts  var_counts	normal_cn	minor_cn	major_cn
   dat <- data.frame(t(mutDat$mutCounts), stringsAsFactors=F)

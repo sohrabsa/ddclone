@@ -2,11 +2,12 @@ source('R/helper.R')
 source('R/ddcrp-inference.R')
 source('R/env-setup.R')
 
+
 driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
                    dataPath='', outputPath, genotype.prior.scheme='AB',
                    dist.fn=jaccardDist, hyperParamAlpha=1, hyperParamA=.5, hyperParamS=1000, tumourContent=1,
                    MCMCOptions,
-                   grid.mS=10, grid.mA=1000, grid.mAlpha=1000,
+                   grid.mS=10, grid.mA=100, grid.mAlpha=100,
                    rndShuffleHyperParams = T, resampleHyperParams = T, permuteCustomers = T) {
   mPhi <- 100
   if (resampleHyperParams) {
@@ -25,7 +26,7 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
     alphaRange <- list(min=hyperParamAlpha, max=hyperParamAlpha)
   }
 
-  # create experiment DIR
+  # create experiment dir
   if (is.null(outputPath)) {
     basePath <- get.path('.')
     timeTag <- format(Sys.time(), "%Y-%m-%d-%H-%M-%OS6")
@@ -56,6 +57,7 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
                   result.path=expPath)
   write.table(t(as.data.frame(profile)), file.path(expPath, 'config.csv'))
 
+  # generate copy number state priors
   psi.priors <- make.psi.priors(cpDat = data.frame(minor_cn=dat$minor_cn, major_cn=dat$major_cn), scheme = genotype.prior.scheme)
 
   print('Generating cached matrices')

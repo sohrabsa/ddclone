@@ -47,9 +47,7 @@ ddcrp.gibbs <- function(dat, dist.fn, decay.fn, lhood.fn, summary.fn = ncomp.sum
   ### set up initial state, summaries, and cluster likelihoods
   msg("setting up the initial state")
   st <- data.frame(idx=1:ndata, cluster=1:ndata, customer=1:ndata)
-  msg("error - before")
   lhood <- plyr::daply(st, plyr::.(cluster), function(df) lhood.fn(dat[df$idx,], hyperParams$s))
-  msg("error - after")
   summary <- summary.fn(dat, 0, st, lhood, hyperParams$alpha)
   # precompute log.prior
   ## log.prior.lst is indexed first by alpha, then by a

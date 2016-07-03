@@ -3,10 +3,14 @@ source('R/env-setup.R')
 source('R/driver.R')
 source('R/summaries.R')
 
-# dataPath = './data/dollo.10.48.5.f0.gl10-u.dat'; outputPath = './output/out1'
-# burnIn = 10; thinning = 1; tumourContent = 1.0; numOfIterations = 100; a = 0.01; alpha = 0.01; s = 1000; seed = 1; useTraditionalCRP = F;
-# grid.mA = 100; grid.mS = 100; grid.mAlpha = 100
-ddclone <- function(dataPath, outputPath, tumourContent = 1.0,
+#' Runs the ddClone MCMC-based inference algorithm over the genotype and allele-counts of a set of muations
+#'  and computes point estimates for clustering assignment and cellular prevalences.
+#'
+#' @param dataPath path to the data object, containing genotpe matrix and allele counts
+#' @param outputPath a directory where to store the results and temp files
+#' @return A list containing \code{df} the estimated clustering and cellular prevalences; \ The sum of \code{expPath} where the results are stored; \code{dataPath} path to input data
+#' @export
+ddclone <- function(dataPath, outputPath='.', tumourContent = 1.0,
                     numOfIterations = 100, thinning = 1, burnIn,
                     a = 0.01, alpha = 1, s = 1, seed = 10, useTraditionalCRP = F,
                     grid.mA = 10, grid.mS = 10, grid.mAlpha = 10) {
@@ -51,4 +55,3 @@ ddclone <- function(dataPath, outputPath, tumourContent = 1.0,
   list(df = df, expPath = expPath, dataPath = dataPath)
 }
 
-# ddclone(dataPath = './data/dollo.10.48.4.f0.gl0-u.dat', outputPath = './output/out1', burnIn = 10, seed = 10, numOfIterations = 100)

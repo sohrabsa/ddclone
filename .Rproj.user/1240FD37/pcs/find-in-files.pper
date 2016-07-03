@@ -3,8 +3,8 @@
         "caseSensitive" : false,
         "filePatterns" : [
         ],
-        "path" : "~/Google Drive/Masters/Thesis/scripts/ddcrppaper/submission.code/ddclone",
-        "query" : "jaccardDist",
+        "path" : "~/Google Drive/Masters/Thesis/scripts/ddcrppaper/ddclone",
+        "query" : "error - be",
         "regex" : false
     }
 }

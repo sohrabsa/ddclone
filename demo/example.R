@@ -11,7 +11,7 @@ source('R/helper.R')
 dataPath <- './data/dollo.10.48.4.f0.gl0-u.dat'
 ddCloneRes <- ddclone(dataPath = dataPath,
               outputPath = './output', tumourContent = 1.0,
-              numOfIterations = 100, thinning = 1, burnIn = 1,
+              numOfIterations = 10, thinning = 1, burnIn = 1,
               seed = 1)
 
 # Display the result
