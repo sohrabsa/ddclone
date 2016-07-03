@@ -4,7 +4,7 @@
         "filePatterns" : [
         ],
         "path" : "~/Google Drive/Masters/Thesis/scripts/ddcrppaper/submission.code/ddclone",
-        "query" : "get.path",
+        "query" : "jaccardDist",
         "regex" : false
     }
 }
