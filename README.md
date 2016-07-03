@@ -1,3 +1,24 @@
+# ddClone: Joint statistical inference of clonal populations from single cell and bulk tumour sequencing data
+
+A statistical framework leveraging data obtained from both single cell and bulk
+sequencing strategies. The ddClone approach
+is predicated on the notion that single cell sequencing
+data will inform and improve clustering of allele fractions
+derived from bulk sequencing data in a joint statistical model.
+ddClone combines a Bayesian non-parametric prior informed by single cell
+data with a likelihood model based on bulk sequencing data to infer
+clonal population architecture. Intuitively, the prior encourages genomic
+loci with co-occurring mutations in single cells to cluster together.
+Using a cell-locus binary matrix from single cell sequencing,
+ddClone computes a distance matrix between mutations using the Jaccard distance with exponential decay.
+This matrix is then used as a prior for inference over mutation clusters and their prevalences from deeply
+sequenced bulk data in a distance-dependent Chinese restaurant process framework.
+The output of the model is the most probable set of clonal genotypes present and the
+prevalence of each genotype in the population.
+
+
+# A simple example
+
 ```{r}
 source('R/ddclone.R')
 source('R/helper.R')
