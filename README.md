@@ -62,5 +62,7 @@ Evaluate prevalence estimates
 ```
 
 Save the result
+```{r}
 score <- data.frame(clustScore, phiMeanError = phiScore)
 write.table(scores, file.path(expPath, 'result-scores.csv'))
+```
