@@ -48,7 +48,7 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
   # Jaccard distance
   dist.fn <- matrix.dist.fn(distMat)
 
-  datM <- Matrix(as.matrix(data.frame(seq(nrow(dat)))))
+  datM <- Matrix::Matrix(as.matrix(data.frame(seq(nrow(dat)))))
 
   profile <- list(mPhi=mPhi, mS=mS, mA=mA, mAlpha=mAlpha,
                   MCMCOptions, hyperParams, decay.fn.name=decay.fn.name,

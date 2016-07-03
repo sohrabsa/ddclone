@@ -1,5 +1,5 @@
 library(lsa)
-## decay functions and distance functions
+### decay functions and distance functions
 
 indexed.window.decay <- function(dat, threshold) {
   function(i) {
