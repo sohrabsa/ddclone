@@ -59,12 +59,12 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
   psi.priors <- make.psi.priors(cpDat = data.frame(minor_cn=dat$minor_cn, major_cn=dat$major_cn), scheme = genotype.prior.scheme)
 
   print('Generating cached matrices')
-  LCACHED <<- make.cached.genotype.aware.likelihood(mPhi, dat, mS, dataID, psi.priors, sRange, tumourContent = tumourContent)
-  Decay.CACHED <<- make.cached.decay(mA, distMat, decay.fn, decay.fn.name, dataID, aRange)
-  AlphaCACHED  <<- make.cached.alpha(mAlpha, distMat, decay.fn, decay.fn.name, dataID, alphaRange)
+  LCACHED <- make.cached.genotype.aware.likelihood(mPhi, dat, mS, dataID, psi.priors, sRange, tumourContent = tumourContent)
+  Decay.CACHED <- make.cached.decay(mA, distMat, decay.fn, decay.fn.name, dataID, aRange)
+  AlphaCACHED  <- make.cached.alpha(mAlpha, distMat, decay.fn, decay.fn.name, dataID, alphaRange, Decay.CACHED)
 
   # log-likelihood
-  lhood.fn <- cached.pyclone.dd.crp.likelihood(dat)
+  lhood.fn <- cached.pyclone.dd.crp.likelihood(dat, LCACHED)
 
   ddcrp <- ddcrp.gibbs(dat=datM,
                        lhood.fn=lhood.fn,
@@ -79,7 +79,10 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
                        processor.fn=sample.processor,
                        resampleHyperParams = resampleHyperParams,
                        permuteCustomers = permuteCustomers,
-                       expPath = expPath)
+                       expPath = expPath,
+                       LCACHED = LCACHED,
+                       AlphaCACHED = AlphaCACHED,
+                       Decay.CACHED = Decay.CACHED)
 
   saveRDS(ddcrp, file.path(expPath, 'clust-result-obj.dat'))
   append.traj(ddcrp$phi.traj, ddcrp$clust.traj, ddcrp$hyperParamTraj, expPath)

@@ -5,6 +5,11 @@ library(VGAM)
 library(vegan)
 library(matrixStats)
 
+# --- Cached Variables --- (helps avoid copying while passing functions)
+#LCACHED <- NULL
+#AlphaCACHED <- NULL
+#Decay.CACHED <- NULL
+
 EmptyCache <- T
 ##
 make.pyclone.input <- function(mutDat) {
@@ -101,10 +106,6 @@ evaluate.prevalence.trace <- function(state, trace, trueState, burn.in) {
 }
 
 
-# --- Cached Variables --- (helps avoid copying while passing functions)
-LCACHED <- NULL
-AlphaCACHED <- NULL
-Decay.CACHED <- NULL
 
 ## cached methods
 
@@ -148,7 +149,7 @@ make.cached.genotype.aware.likelihood <- function(mPhi=1000, dat, mS=10, simulat
 }
 
 # returns logged likelihood
-cached.pyclone.dd.crp.likelihood <- function(dat) {
+cached.pyclone.dd.crp.likelihood <- function(dat, LCACHED) {
   # for now return a monte carlo estimate
   function(obs.indices, precision) {
     discMat <- LCACHED$mat[which.min(abs(precision-LCACHED$s)), , ]
@@ -167,7 +168,7 @@ cached.pyclone.dd.crp.likelihood <- function(dat) {
 
 
 # should be done for current value of a, the decay function parameter
-cached.resample.alpha <- function(state, a) {
+cached.resample.alpha <- function(state, a, Decay.CACHED, AlphaCACHED) {
   alpha <- AlphaCACHED$alpha
   l.p.c.Grid <- AlphaCACHED$grid[[which.min(abs(a - Decay.CACHED$a))]]
   K <- sum(state$idx == state$customer)
@@ -178,7 +179,7 @@ cached.resample.alpha <- function(state, a) {
 
 # TODO: Do I need to include the f(d_ij) in the cluster probabilities?
 # for now I'm assuming no, because f is not influenced by s
-resample.neal.precision <- function(state, cluster.fn, curPrecision) {
+resample.neal.precision <- function(state, cluster.fn, curPrecision, LCACHED) {
   alphaS <- 1.0
   betaS <- 0.0001
   # use the full conditional S according to Neal's paper (prior X F)
@@ -236,7 +237,7 @@ resample.pyclone.precision <- function(state, cluster.fn, curPrecision) {
 }
 
 # resamples a
-cached.resmple.decay.fn.param <- function(state, alpha) {
+cached.resmple.decay.fn.param <- function(state, alpha, Decay.CACHED) {
   a <- Decay.CACHED$a
 
   noSelfLoopIndices <- which(state$idx != state$customer)
@@ -268,7 +269,7 @@ cached.resmple.decay.fn.param <- function(state, alpha) {
 # Dirichlet process concentration parameter
 # returns log.p(alpha) - sum(log(alpha + sum(f(dij))))
 # lacks the term for k * log(alpha)
-make.cached.alpha <- function(M=1000, distMat, decay.fn, decay.fn.name, simulated.data.id, range) {
+make.cached.alpha <- function(M=1000, distMat, decay.fn, decay.fn.name, simulated.data.id, range, Decay.CACHED) {
   fileName <- paste0('alpha.',  M, '-', simulated.data.id)
   baseDir <- get.path('likelihoods')
   filePath <- file.path(baseDir, fileName)
@@ -326,7 +327,7 @@ make.cached.decay <- function(M=1000, distMat, decay.fn, decay.fn.name, simulate
 # given current state (table assignments) sample parameters for each cluster
 # # ref: Sudderth PhD Thesis: Alg2.1. step 3:  θ^t_k ∼ p(θ_k |{x_i | z^t_i = k},λ)  {page 88}
 # why isn't the prior being used? IT"S all based on the likelihood -> because p(theta | lambda) is uniform (uniform prior)
-cached.sample.pyclone.cluster.parameters <- function(state, precision) {
+cached.sample.pyclone.cluster.parameters <- function(state, precision, LCACHED) {
   state$phi <- seq(nrow(state))
   probs <- list()
   discMat <- LCACHED$mat[which.min(abs(precision-LCACHED$s)), , ]

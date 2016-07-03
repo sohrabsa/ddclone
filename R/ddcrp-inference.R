@@ -18,7 +18,8 @@ append.traj <- function(phi.traj, clust.traj, hyper.param.traj, expPath) {
 ddcrp.gibbs <- function(dat, dist.fn, decay.fn, lhood.fn, summary.fn = ncomp.summary,
                         log.prior.thresh=-10, clust.traj=FALSE, phi.traj=FALSE,
                         hyperParams, processor.fn=NULL, MCMCOptions=NULL,
-                        permuteCustomers = T, resampleHyperParams = T, expPath)
+                        permuteCustomers = T, resampleHyperParams = T, expPath,
+                        LCACHED, AlphaCACHED, Decay.CACHED)
 {
   ### set up summary statistics and trajectories
   if (is.null(MCMCOptions)) {
@@ -81,7 +82,7 @@ ddcrp.gibbs <- function(dat, dist.fn, decay.fn, lhood.fn, summary.fn = ncomp.sum
     }
 
     ## run the sitting sampler for each customer
-    tableRes <- ddcrp.resample.tables.assignments(permuted, st, lhood, lhood.fn, hyperParams, l.prior.mat, dat)
+    tableRes <- ddcrp.resample.tables.assignments(permuted, st, lhood, lhood.fn, hyperParams, l.prior.mat, dat, Decay.CACHED, AlphaCACHED)
     iter.score <- tableRes$iter.score
     lhood <- tableRes$lhood
     st <- tableRes$st
@@ -98,7 +99,7 @@ ddcrp.gibbs <- function(dat, dist.fn, decay.fn, lhood.fn, summary.fn = ncomp.sum
 
     ### sample table parameters
     if (!is.null(dim(clust.traj))) clust.traj[iter,] <- st$cluster
-    if (!is.null(dim(phi.traj))) phi.traj[iter,] <- cached.sample.pyclone.cluster.parameters(st, hyperParams$s)$phi
+    if (!is.null(dim(phi.traj))) phi.traj[iter,] <- cached.sample.pyclone.cluster.parameters(st, hyperParams$s, LCACHED)$phi
 
     ## update all hyperparameters
     hyperParamTraj[iter, 'a'] <- hyperParams$a
@@ -115,11 +116,11 @@ ddcrp.gibbs <- function(dat, dist.fn, decay.fn, lhood.fn, summary.fn = ncomp.sum
 
       for (i in shuffleList) {
         if (i == 1) {
-          hyperParams$a <- cached.resmple.decay.fn.param(state=map.state, alpha=hyperParams$alpha)
+          hyperParams$a <- cached.resmple.decay.fn.param(state=map.state, alpha=hyperParams$alpha, Decay.CACHED)
         } else if (i == 2) {
-          hyperParams$alpha <- cached.resample.alpha(state=map.state, a=hyperParams$a)
+          hyperParams$alpha <- cached.resample.alpha(state=map.state, a=hyperParams$a, Decay.CACHED, AlphaCACHED)
         } else if (i == 3) {
-          hyperParams$s <- resample.neal.precision(state=map.state, cluster.fn = lhood.fn, hyperParams$s)
+          hyperParams$s <- resample.neal.precision(state=map.state, cluster.fn = lhood.fn, hyperParams$s, LCACHED)
         }
       }
     }
@@ -134,7 +135,7 @@ ddcrp.gibbs <- function(dat, dist.fn, decay.fn, lhood.fn, summary.fn = ncomp.sum
 }
 
 
-ddcrp.resample.tables.assignments <- function(customerOrder, st, lhood, lhood.fn, hyperParams, l.prior.mat, dat) {
+ddcrp.resample.tables.assignments <- function(customerOrder, st, lhood, lhood.fn, hyperParams, l.prior.mat, dat, Decay.CACHED, AlphaCACHED) {
   iter.score <- 0
   for (i in customerOrder) { # note: index i = 1 is correct at the outset
     ### "remove" the i-th data point from the state
