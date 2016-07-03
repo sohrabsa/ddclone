@@ -46,7 +46,7 @@ ddcrp.gibbs <- function(dat, dist.fn, decay.fn, lhood.fn, summary.fn = ncomp.sum
   ### set up initial state, summaries, and cluster likelihoods
   msg("setting up the initial state")
   st <- data.frame(idx=1:ndata, cluster=1:ndata, customer=1:ndata)
-  lhood <- daply(st, .(cluster), function(df) lhood.fn(dat[df$idx,], hyperParams$s))
+  lhood <- plyr::daply(st, .(cluster), function(df) lhood.fn(dat[df$idx,], hyperParams$s))
   summary <- summary.fn(dat, 0, st, lhood, hyperParams$alpha)
 
   # precompute log.prior
@@ -168,7 +168,7 @@ ddcrp.resample.tables.assignments <- function(customerOrder, st, lhood, lhood.fn
     cand.clusts <- unique(st$cluster[cand.links]) # different values for c.j
 
     # new likelihood for clusters if you were to add link i
-    new.lhood <- daply(subset(st, cluster %in% cand.clusts), .(cluster),
+    new.lhood <- plyr::daply(subset(st, cluster %in% cand.clusts), .(cluster),
                        function (df)
                          lhood.fn(dat[unique(c(df$idx,st[conn.i,"idx"])),], hyperParams$s))
 
@@ -181,7 +181,7 @@ ddcrp.resample.tables.assignments <- function(customerOrder, st, lhood, lhood.fn
     ### compute the conditional distribution
     log.prob <-
       log.prior +
-      laply(cand.links,
+      plyr::laply(cand.links,
             .fun=function (j) {
               # This is just reusing the same likelihood
               sum.old.lhood - old.lhood[char(st$cluster[j])] + new.lhood[char(st$cluster[j])] }) # for each i at a table, update the likelihood

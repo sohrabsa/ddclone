@@ -364,7 +364,7 @@ log.beta.binomial <- function(b, d, m, s) {
   # alpha = sm
   # beta = s(1-m)
   # (d b) B(b + sm, d - b + s(1-m)) / B(sm, s(1-m))
-  r <- dbetabinom.ab(x=b, size=d, shape1=s*m, shape2=s*(1-m), log=T)
+  r <- VGAM::dbetabinom.ab(x=b, size=d, shape1=s*m, shape2=s*(1-m), log=T)
   r
 }
 
@@ -372,7 +372,7 @@ beta.binomial <- function(b, d, m, s) {
   # alpha = sm
   # beta = s(1-m)
   # (d b) B(b + sm, d - b + s(1-m)) / B(sm, s(1-m))
-  dbetabinom.ab(x=b, size=d, shape1=s*m, shape2=s*(1-m), log=F)
+  VGAM::dbetabinom.ab(x=b, size=d, shape1=s*m, shape2=s*(1-m), log=F)
 }
 
 
@@ -395,7 +395,7 @@ sample.gamma.proposal <- function(mean, proposalS=.01) {
 
 
 r.beta.binomail <- function(d, m, s) {
-  rbetabinom.ab(1, size=d, shape1=s*m, shape2=s*(1-m))
+  VGAM::rbetabinom.ab(1, size=d, shape1=s*m, shape2=s*(1-m))
 }
 
 # example ddcrp summary functions
