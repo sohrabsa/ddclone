@@ -15,13 +15,13 @@ estimatePointClustering <- function(expPath, MCMCOptions=list(thinning=10, burnI
     print('warning - there are NA entries in the trace. Maybe an early finish?')
     clust <- na.omit(clust)
   }
-  psm <- comp.psm(as.matrix(clust))
+  psm <- mcclust::comp.psm(as.matrix(clust))
   tempMat <- diag(ncol(clust))
   if (all(psm == tempMat))  {
-    mpear <- maxpear(psm, method='avg')
+    mpear <- mcclust::maxpear(psm, method='avg')
     mpear$cl <- as.matrix(t(data.frame(best=mpear$cl, avg=mpear$cl, comp=mpear$cl, draws=mpear$cl)))
   } else {
-    mpear <- maxpear(psm, method='all', cls.draw = as.matrix(clust))
+    mpear <- mcclust::maxpear(psm, method='all', cls.draw = as.matrix(clust))
   }
   mpear$cl
 }

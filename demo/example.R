@@ -34,7 +34,7 @@ goldStandard <- data.frame(mutID = 1:nMut,
 
 # Save the result
 score <- data.frame(clustScore, phiMeanError = phiScore)
-write.table(scores, file.path(expPath, 'result-scores.csv'))
+write.table(score, file.path(expPath, 'result-scores.csv'))
 
 
 

@@ -157,11 +157,11 @@ cached.pyclone.dd.crp.likelihood <- function(dat, LCACHED) {
     if (length(obs.indices) == 1) {
       val <- discMat[, as.vector(obs.indices)]
       if (any(val == -Inf)) return(-Inf)
-      logSumExp(val) - log(nrow(discMat))
+      matrixStats::logSumExp(val) - log(nrow(discMat))
     } else {
       val <- rowSums(discMat[, as.vector(obs.indices)])
       if (any(val == -Inf)) return(-Inf)
-      logSumExp(val) - log(nrow(discMat)) # makes NaN
+      matrixStats::logSumExp(val) - log(nrow(discMat)) # makes NaN
     }
   }
 }
@@ -335,7 +335,7 @@ cached.sample.pyclone.cluster.parameters <- function(state, precision, LCACHED) 
     obs.indices <- which(state$cluster == clust)
     if (length(obs.indices) == 1) {
       t <- discMat[, obs.indices]
-      prob <- exp(t - logSumExp(t))
+      prob <- exp(t - matrixStats::logSumExp(t))
       if (any(is.nan(prob))) prob <- 0
       if (all(prob == 0)) {
         print('warning - phi prob NaN or Zero (single)')
@@ -343,7 +343,7 @@ cached.sample.pyclone.cluster.parameters <- function(state, precision, LCACHED) 
     }
     else {
       t <- rowSums(discMat[, obs.indices])
-      prob <- exp(t - logSumExp(t))
+      prob <- exp(t - matrixStats::logSumExp(t))
       if (any(is.nan(prob))) prob <- 0
       if (all(prob == 0)) {
         print(obs.indices)
