@@ -80,9 +80,9 @@ link.dist.fn <- function(adj)
 }
 
 jaccardDist <- function(sDat) {
-  d <- as.matrix(vegdist(t(sDat$filteredMutMatrix), method='jaccard', na.rm = T))
+  d <- as.matrix(vegan::vegdist(t(sDat$filteredMutMatrix), method='jaccard', na.rm = T))
   if (nrow(sDat$filteredMutMatrix) == 1) {
-    d <- as.matrix(vegdist(t(sDat$filteredMutMatrix), method='euclidean', na.rm = F))
+    d <- as.matrix(vegan::vegdist(t(sDat$filteredMutMatrix), method='euclidean', na.rm = F))
   }
   d[which(is.nan(d))] <- 1
   d
