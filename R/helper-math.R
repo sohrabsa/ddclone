@@ -1,7 +1,7 @@
 #
 # --- mathematics ---
 #
-
+#
 # safe log function: smoothly handles zero and infinity
 exp300 <- exp(-500)
 

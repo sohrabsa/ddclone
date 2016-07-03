@@ -6,7 +6,7 @@ library(vegan)
 library(matrixStats)
 
 EmptyCache <- T
-
+#
 make.pyclone.input <- function(mutDat) {
   # mutation_id  ref_counts  var_counts	normal_cn	minor_cn	major_cn
   dat <- data.frame(t(mutDat$mutCounts), stringsAsFactors=F)

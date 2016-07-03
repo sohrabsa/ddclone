@@ -7,7 +7,7 @@ library(plyr)
 library(Matrix)
 library(mcclust)
 
-
+#
 append.traj <- function(phi.traj, clust.traj, hyper.param.traj, expPath) {
   write.table(phi.traj, file.path(expPath, 'phi-trace.csv'))
   write.table(clust.traj, file.path(expPath, 'clust-trace.csv'))
