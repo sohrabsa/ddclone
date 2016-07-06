@@ -7,6 +7,56 @@ library(matrixStats)
 
 EmptyCache <- T
 
+
+make.ddclone.input <- function(bulkDataPath, genotypeMatrixPath, outputPath, nameTag='') {
+#   $ mutCounts        : int [1:2, 1:36]  row1: total_counts', row2: 'var_counts'
+#   $ psi              :List of 36
+#   $ filteredMutMatrix: num [1:11, 1:36] 0 0 0 0 0 0 0 1 1 1 ...
+
+  require(xlsx)
+  # example data set
+  # 1. read the genotype-mutation matrix
+  inputPath <- '/Users/sohrab/Google Drive/Masters/Thesis/scripts/ddcrppaper/additional_files/additional_file_4_inputs_simulated.xlsx'
+  genDat <- read.xlsx(file = inputPath, sheetName = 'seed1_genotypes', row.names=T)
+  genDatMutList <- colnames(genDat)
+
+  # 2. read the bulk data
+  bulkDat <- read.xlsx(file = inputPath, sheetName = 'seed_1_allele_counts', row.names=T)
+  bulkMutList <- as.vector(bulkDat$mutation_id)
+  rownames(bulkDat) <- bulkMutList
+
+  # keep and sort by loci shared between genitypes and bulk data
+  sharedMutList <- intersect(genDatMutList, bulkMutList)
+  genDat <- genDat[, sharedMutList]
+  bulkDat <- bulkDat[sharedMutList, ]
+
+  stopifnot(sharedMutList == rownames(bulkDat))
+
+  # mutCount
+  nMut <- length(sharedMutList)
+  mutCounts <- matrix(nrow = 2, ncol=nMut)
+  mutCounts[1, ] <- bulkDat$ref_counts + bulkDat$var_counts
+  mutCounts[2, ] <- bulkDat$var_counts
+
+  # set the copy numbers
+  psi <- make.psi.priors(bulkDat, scheme = 'PCN')
+  psi <- lapply(psi, function(x) x[[1]])
+
+  # wrap the values in a list
+  dataObj <- list()
+  dataObj$mutCounts <- mutCounts
+  dataObj$psi <- psi
+  dataObj$filteredMutMatrix <- mutMatrix
+
+  timeTag <- format(Sys.time(), "%Y-%m-%d-%H-%M-%OS6")
+  saveRDS(dataObj, file.path(outputPath, paste0(nameTag, timeTag, '.dat')))
+
+  dataObj
+}
+
+
+
+
 make.pyclone.input <- function(mutDat) {
   # mutation_id  ref_counts  var_counts	normal_cn	minor_cn	major_cn
   dat <- data.frame(t(mutDat$mutCounts), stringsAsFactors=F)
