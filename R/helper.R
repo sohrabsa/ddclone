@@ -7,7 +7,14 @@ library(matrixStats)
 
 EmptyCache <- T
 
-
+#' Generate a ddClone input object from bulk allele counts and single cell data and saves it in \code{bulkDataPath}.
+#'
+#' @param bulkDataPath Path to a .tsv file that contains allele counts and copy number data. Expects colnames to be "mutation_id", "ref_counts", "var_counts", "normal_cn", "minor_cn", and "major_cn". "minor_cn" and "major_cn" should be integer values for the minimum and maxmum estimated copy number at that locus respectively.
+#' @param genotypeMatrixPath Path to a .tsv file of binary entries where rows correspond to genotypes and coloumns to mutation IDs respectively.
+#' @param outputPath What directory should the output be saved into.
+#' @param nameTag An optional string to be appended to the name of the output object
+#' @return A list with appropriate members that could be given as input for ddClone analysis, for instance \code{ddclone::ddclone}
+#' @export
 make.ddclone.input <- function(bulkDataPath, genotypeMatrixPath, outputPath, nameTag='') {
 #   $ mutCounts        : int [1:2, 1:36]  row1: total_counts', row2: 'var_counts'
 #   $ psi              :List of 36

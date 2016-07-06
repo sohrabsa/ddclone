@@ -3,3 +3,4 @@
 export(ddclone)
 export(estimatePointClustering)
 export(estimatePointPhi)
+export(make.ddclone.input)
