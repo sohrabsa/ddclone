@@ -10,10 +10,9 @@ source('R/helper.R')
 # Run ddClone over simulated dataone")
 
 datObj <- readRDS(system.file("extdata", "dollo.10.48.4.f0.gl0-u.dat", package = "ddclone"))
-dataPath <- './data/dollo.10.48.4.f0.gl0-u.dat'
-ddCloneRes <- ddclone(dataPath = dataPath,
+ddCloneRes <- ddclone(dataObj = datObj,
               outputPath = './output', tumourContent = 1.0,
-              numOfIterations = 10, thinning = 1, burnIn = 1,
+              numOfIterations = 100, thinning = 1, burnIn = 1,
               seed = 1)
 
 # Display the result
