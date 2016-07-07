@@ -7,7 +7,9 @@ source('R/helper.R')
 ###########################
 # 1. Simulated Data
 ###########################
-# Run ddClone over simulated data
+# Run ddClone over simulated dataone")
+
+datObj <- readRDS(system.file("extdata", "dollo.10.48.4.f0.gl0-u.dat", package = "ddclone"))
 dataPath <- './data/dollo.10.48.4.f0.gl0-u.dat'
 ddCloneRes <- ddclone(dataPath = dataPath,
               outputPath = './output', tumourContent = 1.0,

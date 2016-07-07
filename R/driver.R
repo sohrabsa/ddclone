@@ -4,11 +4,12 @@ source('R/env-setup.R')
 
 
 driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
-                   dataPath='', outputPath, genotype.prior.scheme='AB',
+                   dataObj='', outputPath, genotype.prior.scheme='AB',
                    dist.fn=jaccardDist, hyperParamAlpha=1, hyperParamA=.5, hyperParamS=1000, tumourContent=1,
                    MCMCOptions,
                    grid.mS=10, grid.mA=100, grid.mAlpha=100,
                    rndShuffleHyperParams = T, resampleHyperParams = T, permuteCustomers = T) {
+  # setup the grid
   mPhi <- 100
   if (resampleHyperParams) {
     mS <- grid.mS
@@ -17,7 +18,8 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
     sRange <- list(min=10, max=max(hyperParamS, 1000))
     aRange <- list(min=0.01, max=max(hyperParamA, 1))
     alphaRange <- list(min=0.01, max=max(10, hyperParamAlpha))
-  } else {
+  }
+  else {
     mS <- 1
     mA <- 1
     mAlpha <- 1
@@ -38,10 +40,10 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
   dir.create(expPath, recursive = T, showWarnings = F)
   print(expPath)
 
-  dataID <- basename(dataPath)
-  simulatedData <- readRDS(dataPath)
-  distMat <- dist.fn(simulatedData)
-  dat <- make.pyclone.input(simulatedData)
+  # setup input data
+  dataID <- ifelse(is.null(dataObj$dataId), basename(expPath), dataObj$dataId)
+  distMat <- dist.fn(dataObj)
+  dat <- make.pyclone.input(dataObj)
 
   # dirichlet process concentration alpha, decay function parameter a, and betabinomial precision s
   hyperParams <- list(alpha=hyperParamAlpha, a=hyperParamA, s=hyperParamS, t=tumourContent)
@@ -78,7 +80,6 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
                        MCMCOptions=MCMCOptions,
                        phi.traj=TRUE,
                        clust.traj=TRUE,
-                       processor.fn=sample.processor,
                        resampleHyperParams = resampleHyperParams,
                        permuteCustomers = permuteCustomers,
                        expPath = expPath,

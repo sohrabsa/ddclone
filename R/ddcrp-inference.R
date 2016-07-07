@@ -17,7 +17,7 @@ append.traj <- function(phi.traj, clust.traj, hyper.param.traj, expPath) {
 # ddcrp sampler
 ddcrp.gibbs <- function(dat, dist.fn, decay.fn, lhood.fn, summary.fn = ncomp.summary,
                         log.prior.thresh=-10, clust.traj=FALSE, phi.traj=FALSE,
-                        hyperParams, processor.fn=NULL, MCMCOptions=NULL,
+                        hyperParams, MCMCOptions=NULL,
                         permuteCustomers = T, resampleHyperParams = T, expPath,
                         LCACHED, AlphaCACHED, Decay.CACHED)
 {

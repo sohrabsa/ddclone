@@ -5,18 +5,18 @@
 \title{Runs the ddClone MCMC-based inference algorithm over the genotype and allele-counts of a set of muations
  and computes point estimates for clustering assignment and cellular prevalences.}
 \usage{
-ddclone(dataPath, outputPath = ".", tumourContent = 1,
+ddclone(dataObj, outputPath = ".", tumourContent = 1,
   numOfIterations = 100, thinning = 1, burnIn, a = 0.01, alpha = 1,
   s = 1, seed = 10, useTraditionalCRP = F, grid.mA = 10, grid.mS = 10,
   grid.mAlpha = 10)
 }
 \arguments{
-\item{dataPath}{path to the data object, containing genotpe matrix and allele counts}
+\item{dataObj}{The data object, containing genotpe matrix and allele counts}
 
 \item{outputPath}{a directory where to store the results and temp files}
 }
 \value{
-A list containing \code{df} the estimated clustering and cellular prevalences; \ The sum of \code{expPath} where the results are stored; \code{dataPath} path to input data
+A list containing \code{df} the estimated clustering and cellular prevalences; \code{expPath} where the results are stored
 }
 \description{
 Runs the ddClone MCMC-based inference algorithm over the genotype and allele-counts of a set of muations

@@ -17,32 +17,37 @@ The output of the model is the most probable set of clonal genotypes present and
 prevalence of each genotype in the population.
 
 
+# Install the package
+
+
 # A simple example
 
-```{r}
-source('R/ddclone.R')
-source('R/helper.R')
-```
 
 
 # 1. Simulated Data
 
-Run ddClone over simulated data
+Load the library:
 ```{r}
-dataPath <- './data/dollo.10.48.4.f0.gl0-u.dat'
+library(ddclone)
+```
+
+
+Run ddClone over simulated data:
+```{r}
+data()
 ddCloneRes <- ddclone(dataPath = dataPath,
               outputPath = './output', tumourContent = 1.0,
               numOfIterations = 100, thinning = 1, burnIn = 1,
               seed = 1)
 ```
 
-Display the result
+Display the result:
 ```{r}
 df <- ddCloneRes$df
 expPath <- ddCloneRes$expPath
 ```
 
-Evaluate against the gold standard
+Evaluate against the gold standard:
 ```{r}
 dat <- readRDS(dataPath)
 nMut <- length(dat$mutPrevalence)
@@ -50,6 +55,8 @@ goldStandard <- data.frame(mutID = 1:nMut,
                            clusterID = relabel.clusters(as.vector(dat$mutPrevalence)),
                            phi = as.vector(dat$mutPrevalence))
 ```
+Note that in this example the data was packaged in such a way that it contained the gold standard. 
+
 
 Evaluate clustering
 ```{r}
@@ -66,3 +73,7 @@ Save the result
 score <- data.frame(clustScore, phiMeanError = phiScore)
 write.table(score, file.path(expPath, 'result-scores.csv'))
 ```
+
+# 2. Create a ddclone input object
+
+

@@ -1,8 +1,12 @@
+#' @author Sohrab Salehi, \email{ssalehi@bccrc.ca}
+#' ...
+#' @importFrom VGAM dbetabinom.ab rbetabinom.ab
+#' @importFrom matrixStats logSumExp
+
 source('R/genotype.R')
 source('R/env-setup.R')
 
 library(VGAM)
-library(vegan)
 library(matrixStats)
 
 EmptyCache <- T
@@ -62,8 +66,6 @@ make.ddclone.input <- function(bulkDataPath, genotypeMatrixPath, outputPath, nam
 }
 
 
-
-
 make.pyclone.input <- function(mutDat) {
   # mutation_id  ref_counts  var_counts	normal_cn	minor_cn	major_cn
   dat <- data.frame(t(mutDat$mutCounts), stringsAsFactors=F)
@@ -77,7 +79,6 @@ make.pyclone.input <- function(mutDat) {
 
   for (i in seq(nMut)) {
     dat$normal_cn[i] <- genotype.c(mutDat$psi[[i]]$gN)
-    # should we use min for minor?
     b <- genotype.b(mutDat$psi[[i]]$gV)
     a <- genotype.a(mutDat$psi[[i]]$gV)
     dat$minor_cn[i] <- min(b, a)
@@ -374,8 +375,6 @@ make.cached.decay <- function(M=1000, distMat, decay.fn, decay.fn.name, simulate
 }
 
 
-# use http://cran.r-project.org/web/packages/Rmpfr/vignettes/Rmpfr-pkg.pdf
-# to fix underflow
 # given current state (table assignments) sample parameters for each cluster
 # # ref: Sudderth PhD Thesis: Alg2.1. step 3:  θ^t_k ∼ p(θ_k |{x_i | z^t_i = k},λ)  {page 88}
 # why isn't the prior being used? IT"S all based on the likelihood -> because p(theta | lambda) is uniform (uniform prior)
@@ -430,7 +429,6 @@ beta.binomial <- function(b, d, m, s) {
 
 
 # --- Other ---
-
 pyclone.gamma.params <- function(data, proposalS) {
   b = data * proposalS
   a = b * data
@@ -457,13 +455,6 @@ ncomp.summary <- function(dat, iter, state, lhood, alpha)
   c(iter = iter, ncomp = length(unique(state$cluster)))
 }
 
-crp.score.summary <- function(dat, iter, state, lhood, alpha)
-{
-  c(iter = iter,
-    ncomp = length(unique(state$cluster)),
-    crp.score = (crp.log.prior(alpha, state$cluster) + sum(lhood)))
-}
-
 
 # returns customers that are connected to i, directly or indirectly, inclusing i
 # NOT THOSE THAT i is connected to!!! (3->i<-4, i->5) returns c(3,4) and NOT 5
@@ -482,11 +473,5 @@ connections <- function(i, links)
     }
   }
   visited
-}
-
-sample.processor <- function(state, hyperParams, iter) {
-  state <- cached.sample.pyclone.cluster.parameters(state, hyperParams$s)
-  fileName <- paste0(iter, '-clust.csv')
-  write.table(state[, c(2, 6)], file.path(expDir, fileName), sep='\t', col.names=F, row.names=F, append = T)
 }
 

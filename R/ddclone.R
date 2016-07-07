@@ -6,11 +6,11 @@ source('R/summaries.R')
 #' Runs the ddClone MCMC-based inference algorithm over the genotype and allele-counts of a set of muations
 #'  and computes point estimates for clustering assignment and cellular prevalences.
 #'
-#' @param dataPath path to the data object, containing genotpe matrix and allele counts
+#' @param dataObj The data object, containing genotpe matrix and allele counts
 #' @param outputPath a directory where to store the results and temp files
-#' @return A list containing \code{df} the estimated clustering and cellular prevalences; \ The sum of \code{expPath} where the results are stored; \code{dataPath} path to input data
+#' @return A list containing \code{df} the estimated clustering and cellular prevalences; \code{expPath} where the results are stored
 #' @export
-ddclone <- function(dataPath, outputPath='.', tumourContent = 1.0,
+ddclone <- function(dataObj, outputPath='.', tumourContent = 1.0,
                     numOfIterations = 100, thinning = 1, burnIn,
                     a = 0.01, alpha = 1, s = 1, seed = 10, useTraditionalCRP = F,
                     grid.mA = 10, grid.mS = 10, grid.mAlpha = 10) {
@@ -29,7 +29,7 @@ ddclone <- function(dataPath, outputPath='.', tumourContent = 1.0,
   res <- driver(niter = numOfIterations, dist.fn = dist.fn,
                 decay.fn.name =  decay.fn.name,
                 decay.fn = getFunction(decay.fn.name),
-                dataPath = dataPath,
+                dataObj = dataObj,
                 outputPath = outputPath,
                 tumourContent = tumourContent,
                 genotype.prior.scheme ='PCN',
@@ -38,7 +38,6 @@ ddclone <- function(dataPath, outputPath='.', tumourContent = 1.0,
                 grid.mA=grid.mA, grid.mS=grid.mS, grid.mAlpha=grid.mAlpha)
 
   res$hyperParams <- hyperParams
-  res$dataID <- basename(dataPath)
   res$TraditionalCRP <- useTraditionalCRP
   res
   expPath <- res$expPath
@@ -51,7 +50,7 @@ ddclone <- function(dataPath, outputPath='.', tumourContent = 1.0,
   write.table(estPhi, file.path(expPath, 'phi-est.csv'))
 
   # wrap up into a data.frame
-  df <- data.frame(mutID = colnames(readRDS(dataPath)$filteredMutMatrix), phi = unname(estPhi), clusterID = estClust[1, ])
-  list(df = df, expPath = expPath, dataPath = dataPath)
+  df <- data.frame(mutID = colnames(dataObj$filteredMutMatrix), phi = unname(estPhi), clusterID = estClust[1, ])
+  list(df = df, expPath = expPath)
 }
 
