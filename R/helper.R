@@ -13,26 +13,15 @@ EmptyCache <- T
 
 #' Generate a ddClone input object from bulk allele counts and single cell data and saves it in \code{bulkDataPath}.
 #'
-#' @param bulkDataPath Path to a .tsv file that contains allele counts and copy number data. Expects colnames to be "mutation_id", "ref_counts", "var_counts", "normal_cn", "minor_cn", and "major_cn". "minor_cn" and "major_cn" should be integer values for the minimum and maxmum estimated copy number at that locus respectively.
-#' @param genotypeMatrixPath Path to a .tsv file of binary entries where rows correspond to genotypes and coloumns to mutation IDs respectively.
+#' @param bulkData Path A dataframe that contains allele counts and copy number data. Expects colnames to be "mutation_id", "ref_counts", "var_counts", "normal_cn", "minor_cn", and "major_cn". "minor_cn" and "major_cn" should be integer values for the minimum and maxmum estimated copy number at that locus respectively.
+#' @param genotypeMatrix A binary matrix where rows correspond to genotypes and coloumns to mutation IDs respectively.
 #' @param outputPath What directory should the output be saved into.
 #' @param nameTag An optional string to be appended to the name of the output object
 #' @return A list with appropriate members that could be given as input for ddClone analysis, for instance \code{ddclone::ddclone}
 #' @export
-make.ddclone.input <- function(bulkDataPath, genotypeMatrixPath, outputPath, nameTag='') {
-#   $ mutCounts        : int [1:2, 1:36]  row1: total_counts', row2: 'var_counts'
-#   $ psi              :List of 36
-#   $ filteredMutMatrix: num [1:11, 1:36] 0 0 0 0 0 0 0 1 1 1 ...
+make.ddclone.input <- function(bulkData, genDat, outputPath, nameTag='') {
 
-  require(xlsx)
-  # example data set
-  # 1. read the genotype-mutation matrix
-  inputPath <- '/Users/sohrab/Google Drive/Masters/Thesis/scripts/ddcrppaper/additional_files/additional_file_4_inputs_simulated.xlsx'
-  genDat <- read.xlsx(file = inputPath, sheetName = 'seed1_genotypes', row.names=T)
   genDatMutList <- colnames(genDat)
-
-  # 2. read the bulk data
-  bulkDat <- read.xlsx(file = inputPath, sheetName = 'seed_1_allele_counts', row.names=T)
   bulkMutList <- as.vector(bulkDat$mutation_id)
   rownames(bulkDat) <- bulkMutList
 
@@ -57,7 +46,7 @@ make.ddclone.input <- function(bulkDataPath, genotypeMatrixPath, outputPath, nam
   dataObj <- list()
   dataObj$mutCounts <- mutCounts
   dataObj$psi <- psi
-  dataObj$filteredMutMatrix <- mutMatrix
+  dataObj$filteredMutMatrix <- genDat
 
   timeTag <- format(Sys.time(), "%Y-%m-%d-%H-%M-%OS6")
   saveRDS(dataObj, file.path(outputPath, paste0(nameTag, timeTag, '.dat')))
@@ -73,7 +62,8 @@ make.pyclone.input <- function(mutDat) {
   colnames(dat) <- c('total_counts', 'var_counts')
   dat$ref_counts <- dat$total_counts - dat$var_counts
   stopifnot(dat$ref_counts >= 0)
-  nMut <- length(mutDat$mutPrevalence)
+  #nMut <- length(mutDat$mutPrevalence)
+  nMut <- ncol(mutDat$filteredMutMatrix)
   # mutationId should be read off the mutDat
   dat$mutation_id <- colnames(mutDat$filteredMutMatrix)
 
@@ -88,6 +78,12 @@ make.pyclone.input <- function(mutDat) {
   dat
 }
 
+
+#' Computes human friendly labels given a numeric vector \code{numericVector}.
+#'
+#' @param numericVector vector of numeric values, could be cluster labels estimated by ddclone.
+#' @return A list the same length as \code{numericVector}, preserving cluster assignment, while renaming labels to consecutive numbers.
+#' @export
 relabel.clusters <- function(numericVector) {
   t <- as.factor(x = numericVector)
   levels(t) <- 1:length(levels(t))
@@ -124,7 +120,14 @@ mutual.info.score <- function(trueLabels, predLabels) {
   sum(mi)
 }
 
-# V-measure for clustering
+#' Computes the V-measure for clustering assessment.
+#'
+#' See Rosenberg A, Hirschberg J. V-Measure: A Conditional Entropy-Based External Cluster Evaluation Measure. InEMNLP-CoNLL 2007 Jun 28 (Vol. 7, pp. 410-420).
+#' Based on implentation in \url{http://pydoc.net/Python/scikit-learn/0.14.1/sklearn.metrics.cluster.supervised/}
+#' @param labels_true vector of true clustering assignments where \code{labels_true[[i]]} is the clustering assignment of datapoint \code{i}
+#' @param labels_pred same as above, except for predicted clustering assignments
+#' @return A list the containing the \code{v_measure_score}, and its components, \code{homogeneity}, and \code{completeness}.
+#' @export
 evaluate.clustering <- function(labels_true, labels_pred) {
   if (length(labels_true) == 0)
     return(list(homogeneity=1.0, completeness=1.0, v_measure_score=1.0))
@@ -143,19 +146,6 @@ evaluate.clustering <- function(labels_true, labels_pred) {
     v_measure_score <- (2.0 * homogeneity * completeness/ (homogeneity + completeness))
 
   list(homogeneity=homogeneity, completeness=completeness, v_measure_score=v_measure_score)
-}
-
-evaluate.prevalence <- function(truePhi, predPhi) {
-  mean(abs(truePhi - predPhi))
-}
-
-
-# Absolute difference of mean MCMC-samples and true value
-evaluate.prevalence.trace <- function(state, trace, trueState, burn.in) {
-  # trace: matrix[values , mutations]
-  trace <- trace[-c(1:burn.in), ]
-  means <- colMeans(trace)
-  abs(means - trueState)
 }
 
 
@@ -352,12 +342,6 @@ make.cached.alpha <- function(M=1000, distMat, decay.fn, decay.fn.name, simulate
 }
 
 
-inspect.alpha.prior <- function() {
-  y=dgamma(alpha, shape=1, rate=0.4, log=T)
-  plot(alpha, exp(y), xlim=c(0,20))
-  lines(alpha, y=rep(0, length(alpha)))
-}
-
 make.cached.decay <- function(M=1000, distMat, decay.fn, decay.fn.name, simulated.data.id, range) {
   fileName <- paste0('decay.fn.', decay.fn.name,  M, '-', simulated.data.id)
   baseDir <- get.path('likelihoods')
@@ -428,7 +412,6 @@ beta.binomial <- function(b, d, m, s) {
 }
 
 
-# --- Other ---
 pyclone.gamma.params <- function(data, proposalS) {
   b = data * proposalS
   a = b * data

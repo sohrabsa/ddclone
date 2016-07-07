@@ -1,10 +1,46 @@
+---
+references:
+- id: ddcrp
+  title: Distance dependent Chinese restaurant processes
+  author:
+  - family: Frazier
+    given: PI
+  - family: Blei
+    given: DM
+  volume: 12
+  publisher: Journal of Machine Learning Research
+  page: 2461--2488
+  type: article-journal
+  issued:
+    year: 2012
+    month: Aug
+- id: ddclone
+  title: Joint statistical inference of clonal populations ￼from single cell and bulk tumour sequencing data
+  author:
+  - family: Salehi
+    given: Sohrab
+  - family: Steif
+    given: Adi
+  - family: Andrew
+    given: Roth
+  - family: Aparicio
+    given: Samuel
+  - family: Bouchard
+    given: Alexandre
+  - family: Shah
+    given: Sohrab P.
+  publisher: (submitted)
+  type: article-journal
+---
+
+
+
 # ddClone: Joint statistical inference of clonal populations from single cell and bulk tumour sequencing data
 
-A statistical framework leveraging data obtained from both single cell and bulk
-sequencing strategies. The ddClone approach
-is predicated on the notion that single cell sequencing
+A statistical framework leveraging data obtained from both single cell and bulk sequencing strategies. 
+The ddClone [@ddclone] approach is predicated on the notion that single cell sequencing
 data will inform and improve clustering of allele fractions
-derived from bulk sequencing data in a joint statistical model.
+derived from bulk sequencing data in a joint statistical model.  
 ddClone combines a Bayesian non-parametric prior informed by single cell
 data with a likelihood model based on bulk sequencing data to infer
 clonal population architecture. Intuitively, the prior encourages genomic
@@ -12,31 +48,35 @@ loci with co-occurring mutations in single cells to cluster together.
 Using a cell-locus binary matrix from single cell sequencing,
 ddClone computes a distance matrix between mutations using the Jaccard distance with exponential decay.
 This matrix is then used as a prior for inference over mutation clusters and their prevalences from deeply
-sequenced bulk data in a distance-dependent Chinese restaurant process framework.
-The output of the model is the most probable set of clonal genotypes present and the
-prevalence of each genotype in the population.
+sequenced bulk data in a distance-dependent Chinese restaurant process [@ddcrp] framework.
+The output of the model is the most probable set of mutational clusters present and the
+prevalence of each mutation in the population.
+The code is based on the ddCRP model, as introduced and implemented in [@ddcrp].
 
 
-# Install the package
+## Install the package
 
+An easy way to install ddclone is as follows:
 
-# A simple example
+```{r}
+library('devtools')
+install_github('sohrabsa/ddClone')
+```
 
+## A simple example
 
-
-# 1. Simulated Data
+### 1. Simulated Data
 
 Load the library:
 ```{r}
 library(ddclone)
 ```
 
-
 Run ddClone over simulated data:
 ```{r}
-data()
-ddCloneRes <- ddclone(dataPath = dataPath,
-              outputPath = './output', tumourContent = 1.0,
+data(dollo.10.48.0.f0.gl0)
+ddCloneRes <- ddclone(dataObj = dollo.10.48.0.f0.gl0,
+              outputPath = './output/dollo.0/', tumourContent = 1.0,
               numOfIterations = 100, thinning = 1, burnIn = 1,
               seed = 1)
 ```
@@ -49,31 +89,68 @@ expPath <- ddCloneRes$expPath
 
 Evaluate against the gold standard:
 ```{r}
-dat <- readRDS(dataPath)
-nMut <- length(dat$mutPrevalence)
+data(dollo.10.48.0.f0.gl0)
+nMut <- length(dollo.10.48.0.f0.gl0$mutPrevalence)
 goldStandard <- data.frame(mutID = 1:nMut,
-                           clusterID = relabel.clusters(as.vector(dat$mutPrevalence)),
-                           phi = as.vector(dat$mutPrevalence))
+                           clusterID = relabel.clusters(as.vector(dollo.10.48.0.f0.gl0$mutPrevalence)),
+                           phi = as.vector(dollo.10.48.0.f0.gl0$mutPrevalence))
 ```
 Note that in this example the data was packaged in such a way that it contained the gold standard. 
 
 
-Evaluate clustering
+Evaluate clustering:
 ```{r}
 (clustScore <- evaluate.clustering(goldStandard$clusterID, df$clusterID))
 ```
 
-Evaluate prevalence estimates
+Evaluate prevalence estimates:
 ```{r}
 (phiScore <- mean(abs(goldStandard$phi - df$phi)))
 ```
 
-Save the result
+Save the result:
 ```{r}
 score <- data.frame(clustScore, phiMeanError = phiScore)
 write.table(score, file.path(expPath, 'result-scores.csv'))
 ```
 
-# 2. Create a ddclone input object
+### 2. Create a ddclone input object
+ddClone's input object is a list of 3 elements, `mutCounts`, `psi`, and `filteredMutMatrix`.
+We use the simulated data from the Generalized Dollo model:
+```{r}
+require(xlsx)
+intputFilePath <- system.file("extdata", "inputs_simulated.xlsx", package = "ddclone")
+```
 
+Read the genotype-mutation matrix:
+```{r}
+genDat <- read.xlsx(file = intputFilePath, sheetName = 'seed1_genotypes', row.names = T)
+genDatMutList <- colnames(genDat)
+```
+
+Read the bulk data:
+```{r}
+bulkDat <- read.xlsx(file = intputFilePath, sheetName = 'seed_1_allele_counts', row.names = T)
+bulkMutList <- as.vector(bulkDat$mutation_id)
+rownames(bulkDat) <- bulkMutList
+```
+
+Generate the ddClone compatible data object:
+```{r}
+ddCloneInputObj <- make.ddclone.input(bulkDat = bulkDat, genDat = genDat, outputPath = './output/dollo.0/', nameTag = '')
+```
+
+Inspect the data object:
+```{r}
+str(ddCloneInputObj, max.level = 1)
+```
+Now we can run the analysis similar to sample 1 above.
+```{r}
+ddCloneRes <- ddclone(dataObj = ddCloneInputObj,
+              outputPath = './output/dollo.0/', tumourContent = 1.0,
+              numOfIterations = 100, thinning = 1, burnIn = 1,
+              seed = 1)
+```
+
+# References
 

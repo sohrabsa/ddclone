@@ -55,7 +55,7 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
 
   profile <- list(mPhi=mPhi, mS=mS, mA=mA, mAlpha=mAlpha,
                   MCMCOptions, hyperParams, decay.fn.name=decay.fn.name,
-                  simulated.data.id=basename(dataPath), genotype.prior.scheme=genotype.prior.scheme,
+                  simulated.data.id=dataID, genotype.prior.scheme=genotype.prior.scheme,
                   result.path=expPath)
   write.table(t(as.data.frame(profile)), file.path(expPath, 'config.csv'))
 

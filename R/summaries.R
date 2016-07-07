@@ -1,9 +1,4 @@
 # summary
-load.original.data <- function(dataID) {
-  dat <- simulated.data.for.id(dataID)
-  nMut <- length(dat$mutPrevalence)
-  data.frame(id=1:nMut, prev=as.vector(dat$mutPrevalence))
-}
 
 #' Computes a point estimate (using MAXPEAR method) for clustering of the mutations from the results of a ddClone analysis run
 #'
