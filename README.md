@@ -1,37 +1,3 @@
----
-references:
-- id: ddcrp
-  title: Distance dependent Chinese restaurant processes
-  author:
-  - family: Frazier
-    given: PI
-  - family: Blei
-    given: DM
-  volume: 12
-  publisher: Journal of Machine Learning Research
-  page: 2461--2488
-  type: article-journal
-  issued:
-    year: 2012
-    month: Aug
-- id: ddclone
-  title: Joint statistical inference of clonal populations from single cell and bulk tumour sequencing data
-  author:
-  - family: Salehi
-    given: Sohrab
-  - family: Steif
-    given: Adi
-  - family: Andrew
-    given: Roth
-  - family: Aparicio
-    given: Samuel
-  - family: Bouchard
-    given: Alexandre
-  - family: Shah
-    given: Sohrab P.
-  publisher: (submitted)
-  type: article-journal
----
 
 
 
