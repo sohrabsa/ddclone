@@ -4,7 +4,7 @@
         "filePatterns" : [
         ],
         "path" : "~/Google Drive/Masters/Thesis/scripts/ddcrppaper/ddclone",
-        "query" : "mutDat$filteredMutMatrix",
+        "query" : "load.original.data",
         "regex" : false
     }
 }

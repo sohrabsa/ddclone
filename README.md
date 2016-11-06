@@ -15,7 +15,7 @@ references:
     year: 2012
     month: Aug
 - id: ddclone
-  title: Joint statistical inference of clonal populations ￼from single cell and bulk tumour sequencing data
+  title: Joint statistical inference of clonal populations from single cell and bulk tumour sequencing data
   author:
   - family: Salehi
     given: Sohrab
@@ -74,8 +74,8 @@ library(ddclone)
 
 Run ddClone over simulated data:
 ```{r}
-data(dollo.10.48.0.f0.gl0)
-ddCloneRes <- ddclone(dataObj = dollo.10.48.0.f0.gl0,
+data(gd.10.48.0.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da)
+ddCloneRes <- ddclone(dataObj = gd.10.48.0.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da,
               outputPath = './output/dollo.0/', tumourContent = 1.0,
               numOfIterations = 100, thinning = 1, burnIn = 1,
               seed = 1)
@@ -89,11 +89,11 @@ expPath <- ddCloneRes$expPath
 
 Evaluate against the gold standard:
 ```{r}
-data(dollo.10.48.0.f0.gl0)
-nMut <- length(dollo.10.48.0.f0.gl0$mutPrevalence)
+data(gd.10.48.0.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da)
+nMut <- length(gd.10.48.0.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da$mutPrevalence)
 goldStandard <- data.frame(mutID = 1:nMut,
-                           clusterID = relabel.clusters(as.vector(dollo.10.48.0.f0.gl0$mutPrevalence)),
-                           phi = as.vector(dollo.10.48.0.f0.gl0$mutPrevalence))
+                           clusterID = relabel.clusters(as.vector(gd.10.48.0.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da$mutPrevalence)),
+                           phi = as.vector(gd.10.48.0.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da$mutPrevalence))
 ```
 Note that in this example the data was packaged in such a way that it contained the gold standard. 
 

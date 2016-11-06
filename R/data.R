@@ -92,9 +92,9 @@
 
 
 
-#' Simulated data from Generalized Dollo model, with seed 0
+#' Simulated data from Generalized gd model, with seed 0
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -109,15 +109,15 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.0.f0.gl0"
+"gd.10.48.0.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
-#' Simulated data from Generalized Dollo model, with seed 1
+#' Simulated data from Generalized gd model, with seed 1
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -132,15 +132,15 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.1.f0.gl0"
+"gd.10.48.1.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
-#' Simulated data from Generalized Dollo model, with seed 2
+#' Simulated data from Generalized gd model, with seed 2
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -155,15 +155,15 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.2.f0.gl0"
+"gd.10.48.2.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
-#' Simulated data from Generalized Dollo model, with seed 3
+#' Simulated data from Generalized gd model, with seed 3
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -178,15 +178,15 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.3.f0.gl0"
+"gd.10.48.3.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
-#' Simulated data from Generalized Dollo model, with seed 4
+#' Simulated data from Generalized gd model, with seed 4
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -201,15 +201,15 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.4.f0.gl0"
+"gd.10.48.4.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
-#' Simulated data from Generalized Dollo model, with seed 5
+#' Simulated data from Generalized gd model, with seed 5
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -224,15 +224,15 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.5.f0.gl0"
+"gd.10.48.5.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
-#' Simulated data from Generalized Dollo model, with seed 6
+#' Simulated data from Generalized gd model, with seed 6
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -247,15 +247,15 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.6.f0.gl0"
+"gd.10.48.6.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
-#' Simulated data from Generalized Dollo model, with seed 7
+#' Simulated data from Generalized gd model, with seed 7
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -270,15 +270,15 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.7.f0.gl0"
+"gd.10.48.7.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
-#' Simulated data from Generalized Dollo model, with seed 8
+#' Simulated data from Generalized gd model, with seed 8
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -293,15 +293,15 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.8.f0.gl0"
+"gd.10.48.8.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
-#' Simulated data from Generalized Dollo model, with seed 9
+#' Simulated data from Generalized gd model, with seed 9
 #'
-#' A dataset containing the allele counts and genotypes from the Generalized Dollo model.
+#' A dataset containing the allele counts and genotypes from the Generalized gd model.
 #' See (Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).)
 #'
 #' @format A list of 8 variables:
@@ -316,10 +316,10 @@
 #'   \item phi: For internal use of the package.
 #'   \item trueMutMatrix: For internal use of the package.
 #'   \item psis.single.cell: For internal use of the package.
-#'   \item dolloDirName: For internal use fo the package.
+#'   \item gdDirName: For internal use fo the package.
 #'  }
 #'
-"dollo.10.48.9.f0.gl0"
+"gd.10.48.9.f0.gl0.u.tips.ADO.00.doublet.00.m.50.nus.0.da"
 
 
 
