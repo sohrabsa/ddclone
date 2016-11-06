@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 references:
 - id: ddcrp
@@ -35,10 +36,12 @@ references:
 
 
 
+=======
+>>>>>>> ecfef42ce4cb73bd586398270a3c954ad39ba1ef
 # ddClone: Joint statistical inference of clonal populations from single cell and bulk tumour sequencing data
 
 A statistical framework leveraging data obtained from both single cell and bulk sequencing strategies. 
-The ddClone [@ddclone] approach is predicated on the notion that single cell sequencing
+The ddClone (Salehi et al.) approach is predicated on the notion that single cell sequencing
 data will inform and improve clustering of allele fractions
 derived from bulk sequencing data in a joint statistical model.  
 ddClone combines a Bayesian non-parametric prior informed by single cell
@@ -48,10 +51,10 @@ loci with co-occurring mutations in single cells to cluster together.
 Using a cell-locus binary matrix from single cell sequencing,
 ddClone computes a distance matrix between mutations using the Jaccard distance with exponential decay.
 This matrix is then used as a prior for inference over mutation clusters and their prevalences from deeply
-sequenced bulk data in a distance-dependent Chinese restaurant process [@ddcrp] framework.
+sequenced bulk data in a distance-dependent Chinese restaurant process (Frazier and Blei 2012) framework.
 The output of the model is the most probable set of mutational clusters present and the
 prevalence of each mutation in the population.
-The code is based on the ddCRP model, as introduced and implemented in [@ddcrp].
+The code is based on the ddCRP model, as introduced and implemented in (Frazier and Blei 2012).
 
 
 ## Install the package
@@ -153,4 +156,6 @@ ddCloneRes <- ddclone(dataObj = ddCloneInputObj,
 ```
 
 # References
+Frazier, PI, and DM Blei. 2012. “Distance Dependent Chinese Restaurant Processes” 12 (Aug). Journal of Machine Learning Research: 2461–88.
 
+Salehi, Sohrab, Adi Steif, Roth Andrew, Samuel Aparicio, Alexandre Bouchard, and Sohrab P. Shah. “Joint Statistical Inference of Clonal Populations ￼from Single Cell and Bulk Tumour Sequencing Data.” (submitted).
