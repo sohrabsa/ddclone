@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 references:
 - id: ddcrp
@@ -37,7 +36,6 @@ references:
 
 
 =======
->>>>>>> ecfef42ce4cb73bd586398270a3c954ad39ba1ef
 # ddClone: Joint statistical inference of clonal populations from single cell and bulk tumour sequencing data
 
 A statistical framework leveraging data obtained from both single cell and bulk sequencing strategies. 
