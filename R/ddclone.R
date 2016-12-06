@@ -13,6 +13,7 @@ source('R/summaries.R')
 ddclone <- function(dataObj, outputPath='.', tumourContent = 1.0,
                     numOfIterations = 100, thinning = 1, burnIn,
                     a = 0.01, alpha = 1, s = 1, seed = 10, useTraditionalCRP = F,
+                    dist.fn = jaccardDist,
                     grid.mA = 10, grid.mS = 10, grid.mAlpha = 10) {
   # run the sampler
   if (is.null(burnIn)) burnIn <- floor(niter/10)
@@ -20,7 +21,7 @@ ddclone <- function(dataObj, outputPath='.', tumourContent = 1.0,
 
   hyperParams <- list(hyperParamAlpha=alpha, hyperParamA=a, hyperParamS=s)
   decay.fn.name <- 'exp.decay.s'
-  dist.fn <- jaccardDist
+
   if (useTraditionalCRP) {
     decay.fn.name <- 'identity.decay'
     dist.fn <- identity.s
