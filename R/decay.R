@@ -78,7 +78,7 @@ link.dist.fn <- function(adj)
   function (i, j) if (adj[i,j]==0) { Inf } else { 1 }
 }
 
-jaccardDist <- function(sDat) {
+jaccardDist <- function(sDat, options=NULL) {
   d <- as.matrix(vegan::vegdist(t(sDat$filteredMutMatrix), method='jaccard', na.rm = T))
   if (nrow(sDat$filteredMutMatrix) == 1) {
     d <- as.matrix(vegan::vegdist(t(sDat$filteredMutMatrix), method='euclidean', na.rm = F))
@@ -87,7 +87,7 @@ jaccardDist <- function(sDat) {
   d
 }
 
-identity.s <- function(simulatedData) {
+identity.s <- function(simulatedData, options=NULL) {
   d <- matrix(NA, nrow=ncol(simulatedData$filteredMutMatrix), ncol=ncol(simulatedData$filteredMutMatrix))
 
   for (i in seq(nrow(d))) {
@@ -99,6 +99,41 @@ identity.s <- function(simulatedData) {
   }
   d
 }
+
+# A non-symmeteric error with respect to FN and FP rates
+# FN.rate is mostly contributed to by adoRate
+# Options is a list containing an element FN.rate, the estimated false negative rate
+modified.jaccard.dist <- function(sDat, options = NULL) {
+  if (!is.null(options)) {
+    if (is.null(options$FN.rate))
+      FN.rate <- 0
+    else
+      FN.rate <- options$FN.rate
+  }
+  if (FN.rate == 0 || nrow(sDat$filteredMutMatrix) == 1) return(jaccardDist(sDat))
+
+  # initialize the dist mat
+  mat <- sDat$filteredMutMatrix
+  d <- matrix(data = NA, ncol(mat), ncol(mat))
+  colnames(d) <- colnames(mat)
+  rownames(d) <- colnames(mat)
+
+  for (i in 1:(ncol(mat) -1) ) {
+    for (j in (i+1):ncol(mat)) {
+      d[i, j] <- modified.jaccard.dist.vector(mat[, i], mat[, j], FN.rate)
+      d[j, i] <- d[i, j]
+    }
+  }
+
+  for (i in 1:(ncol(mat))) {
+    d[i, i] <- 0
+  }
+
+  d[which(is.nan(d))] <- 1
+  d
+}
+
+
 
 cosineDist <- function(simulatedData) {
   as.matrix(cosine(simulatedData$filteredMutMatrix))

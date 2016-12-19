@@ -5,7 +5,7 @@ source('R/env-setup.R')
 
 driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
                    dataObj='', outputPath, genotype.prior.scheme='AB',
-                   dist.fn=jaccardDist, hyperParamAlpha=1, hyperParamA=.5, hyperParamS=1000, tumourContent=1,
+                   dist.fn=jaccardDist, dist.fn.options=NULL, hyperParamAlpha=1, hyperParamA=.5, hyperParamS=1000, tumourContent=1,
                    MCMCOptions,
                    grid.mS=10, grid.mA=100, grid.mAlpha=100,
                    rndShuffleHyperParams = T, resampleHyperParams = T, permuteCustomers = T) {
@@ -42,13 +42,13 @@ driver <- function(niter=100, decay.fn=window.fn.s, decay.fn.name='window.fn.s',
 
   # setup input data
   dataID <- ifelse(is.null(dataObj$dataId), basename(expPath), dataObj$dataId)
-  distMat <- dist.fn(dataObj)
+  distMat <- dist.fn(dataObj, options=dist.fn.options)
   dat <- make.pyclone.input(dataObj)
 
   # dirichlet process concentration alpha, decay function parameter a, and betabinomial precision s
   hyperParams <- list(alpha=hyperParamAlpha, a=hyperParamA, s=hyperParamS, t=tumourContent)
 
-  # Jaccard distance
+  # e.g., Jaccard distance
   dist.fn <- matrix.dist.fn(distMat)
 
   datM <- Matrix::Matrix(as.matrix(data.frame(seq(nrow(dat)))))
