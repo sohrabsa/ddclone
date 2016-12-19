@@ -7,8 +7,8 @@
 \usage{
 ddclone(dataObj, outputPath = ".", tumourContent = 1,
   numOfIterations = 100, thinning = 1, burnIn, a = 0.01, alpha = 1,
-  s = 1, seed = 10, useTraditionalCRP = F, grid.mA = 10, grid.mS = 10,
-  grid.mAlpha = 10)
+  s = 1, seed = 10, useTraditionalCRP = F, dist.fn = jaccardDist,
+  dist.fn.options = NULL, grid.mA = 10, grid.mS = 10, grid.mAlpha = 10)
 }
 \arguments{
 \item{dataObj}{The data object, containing genotpe matrix and allele counts}

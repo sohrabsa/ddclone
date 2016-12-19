@@ -78,6 +78,10 @@ link.dist.fn <- function(adj)
   function (i, j) if (adj[i,j]==0) { Inf } else { 1 }
 }
 
+#' Standard Jaccard distance
+#' @param sDat should be a list containing an element  \code{filteredMutMatrix}, the genotype (or cell) by mutation matrix
+#' @param Options should be empty
+#' @return A matrix whose elements are the distances between the loci
 #' @export
 jaccardDist <- function(sDat, options=NULL) {
   d <- as.matrix(vegan::vegdist(t(sDat$filteredMutMatrix), method='jaccard', na.rm = T))
@@ -88,7 +92,7 @@ jaccardDist <- function(sDat, options=NULL) {
   d
 }
 
-#' @export
+
 identity.s <- function(simulatedData, options=NULL) {
   d <- matrix(NA, nrow=ncol(simulatedData$filteredMutMatrix), ncol=ncol(simulatedData$filteredMutMatrix))
 
@@ -102,9 +106,14 @@ identity.s <- function(simulatedData, options=NULL) {
   d
 }
 
-# A non-symmeteric error with respect to FN and FP rates
-# FN.rate is mostly contributed to by adoRate
-# Options is a list containing an element FN.rate, the estimated false negative rate
+#
+#
+#
+
+#' A non-symmeteric jaccard distance with respect to FN and FP rates
+#' @param sDat a list containing an element  \code{filteredMutMatrix}, the genotype (or cell) by mutation matrix
+#' @param Options is a list containing an element FN.rate, the estimated false negative rate, FN.rate is mostly contributed to by adoRate
+#' @return A matrix whose elements are the distances between the loci
 #' @export
 modified.jaccard.dist <- function(sDat, options = NULL) {
   if (!is.null(options)) {
