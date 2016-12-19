@@ -78,6 +78,7 @@ link.dist.fn <- function(adj)
   function (i, j) if (adj[i,j]==0) { Inf } else { 1 }
 }
 
+#' @export
 jaccardDist <- function(sDat, options=NULL) {
   d <- as.matrix(vegan::vegdist(t(sDat$filteredMutMatrix), method='jaccard', na.rm = T))
   if (nrow(sDat$filteredMutMatrix) == 1) {
@@ -87,6 +88,7 @@ jaccardDist <- function(sDat, options=NULL) {
   d
 }
 
+#' @export
 identity.s <- function(simulatedData, options=NULL) {
   d <- matrix(NA, nrow=ncol(simulatedData$filteredMutMatrix), ncol=ncol(simulatedData$filteredMutMatrix))
 
@@ -103,6 +105,7 @@ identity.s <- function(simulatedData, options=NULL) {
 # A non-symmeteric error with respect to FN and FP rates
 # FN.rate is mostly contributed to by adoRate
 # Options is a list containing an element FN.rate, the estimated false negative rate
+#' @export
 modified.jaccard.dist <- function(sDat, options = NULL) {
   if (!is.null(options)) {
     if (is.null(options$FN.rate))

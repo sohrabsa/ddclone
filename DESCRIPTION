@@ -2,8 +2,8 @@ Package: ddclone
 Type: Package
 Title: Joint statistical inference of clonal populations from single cell and
     bulk tumour sequencing data
-Version: 0.1
-Date: 2016-06-29
+Version: 0.2
+Date: 2016-12-18
 Author: Sohrab Salehi
 Maintainer: Sohrab Salehi <ssalhei@bccrc.ca>
 Description: Joint statistical inference of clonal populations from single cell
