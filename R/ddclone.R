@@ -2,6 +2,7 @@
 source('R/env-setup.R')
 source('R/driver.R')
 source('R/summaries.R')
+source("R/decay.R")
 
 #' Runs the ddClone MCMC-based inference algorithm over the genotype and allele-counts of a set of muations
 #'  and computes point estimates for clustering assignment and cellular prevalences.
