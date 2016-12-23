@@ -107,17 +107,21 @@ identity.s <- function(simulatedData, options=NULL) {
 }
 
 
+mean.size <- function(X, FN.rate) {
+  sum(X) + (length(X) - sum(X)) * FN.rate
+}
+
 
 # For binary vectors X and Y,
 # define a as the number of times where exactly one of X_i or Y_i are equal to 1
 # define b as the number of times that both X_i and Y_i are equal to 1.
 # The modified Jaccard distance is (a + 2*b*FN.rate)/(a+b)
 modified.jaccard.dist.vector <- function(X, Y, FN.rate) {
-  # X = mat[, i]; Y = mat[, j]; FN.rate = .1
-  a <- sum(xor(X, Y))
-  b <- sum(X & Y)
-  (a + 2*b*FN.rate) / (a + b)
+  XplusY <- mean.size(X, FN.rate) + mean.size(Y, FN.rate)
+  XintersectY <- sum(xor(X, Y))*FN.rate + sum(X & Y)
+  (XplusY - 2*XintersectY) / (XplusY - XintersectY)
 }
+
 
 #' A non-symmeteric jaccard distance with respect to FN and FP rates
 #' @param sDat a list containing an element  \code{filteredMutMatrix}, the genotype (or cell) by mutation matrix
