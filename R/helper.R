@@ -19,7 +19,7 @@ EmptyCache <- T
 #' @param nameTag An optional string to be appended to the name of the output object
 #' @return A list with appropriate members that could be given as input for ddClone analysis, for instance \code{ddclone::ddclone}
 #' @export
-make.ddclone.input <- function(bulkData, genDat, outputPath, nameTag='') {
+make.ddclone.input <- function(bulkDat, genDat, outputPath, nameTag='') {
 
   genDatMutList <- colnames(genDat)
   bulkMutList <- as.vector(bulkDat$mutation_id)
